@@ -33,29 +33,17 @@
                     </v-list>
                 </v-menu>
             </div>
-
-            <div>
-                <v-menu offset-y class="category">
-                    <template v-slot:activator="{on}">
-                        <v-btn text v-on="on">
-                            <span class="black--text">Категорії</span>
-
-                            <v-icon class="grey--text">{{idef}}</v-icon>
-                        </v-btn>
-                    </template>
-                    <v-list>
-                        <v-list-item v-for="cat in categories" :key="cat" :to="'/courses/' + cat">{{cat}}</v-list-item>
-                    </v-list>
-                </v-menu>
-            </div>
+            <v-btn class="white--text" to="/lessons">Предмети</v-btn>
+                    
+            
         </div>
         <v-btn text class="grey--text">
             <v-icon>mdi-magnify</v-icon>
         </v-btn>
 
-        <v-menu bottom origin="center center" transition="scale-transition" :absolute="absolute">
-            <template v-slot:activator="{ on }">
-                <v-btn fab dark icon v-on="on" >
+        <v-menu bottom origin="center center" transition="scale-transition" :absolute="absolute" class='drop'>
+            <template v-slot:activator="{ on }" class="drop">
+                <v-btn fab dark icon v-on="on">
                     <v-icon>mdi-account</v-icon>
                 </v-btn>
             </template>
@@ -135,87 +123,50 @@
 
                     <!-- Register -->
 
+                    <!-- Register -->
+                    <v-list-item-title>
+                        <v-row>
+                            <v-dialog v-model="dialog3" max-width="600px">
+                                <template v-if="!isUserLoggedIn" v-slot:activator="{ on }">
+                                    <v-btn text class="black--text" color="primary" dark v-on="on" @click.stop="dialog = false">Зареєструватись</v-btn>
+                                </template>
 
-            <!-- Register -->
-            <v-list-item-title>
-              <v-row>
-                <v-dialog v-model="dialog3" max-width="600px">
-                  <template v-if="!isUserLoggedIn" v-slot:activator="{ on }">
-                    <v-btn
-                      text
-                      class="black--text"
-                      color="primary"
-                      dark
-                      v-on="on"
-                      @click.stop="dialog = false"
-                    >Зареєструватись</v-btn>
-                  </template>
+                                <v-card class="register-wrap">
+                                    <v-btn icon dark @click="dialog3 = false">
+                                        <v-icon>mdi-close</v-icon>
+                                    </v-btn>
+                                    <v-card-title>
+                                        <span>Реєстрація</span>
+                                    </v-card-title>
+                                    <v-card-actions>
+                                        <v-icon>{{ icons.mdiAccount }}</v-icon>
+                                    </v-card-actions>
+                                    <v-row align="center" justify="center">
+                                        <v-col cols="12" sm="8" md="8">
+                                            <v-form v-model="valid" lazy-validation ref="form">
+                                                <v-text-field v-model="email" color="secondary" name="login" :rules="emailRules" type="text" placeholder="Email" />
 
-                  <v-card class="register-wrap">
-                    <v-btn icon dark @click="dialog3 = false">
-                      <v-icon>mdi-close</v-icon>
-                    </v-btn>
-                    <v-card-title>
-                      <span>Реєстрація</span>
-                    </v-card-title>
-                    <v-card-actions>
-                      <v-icon>{{ icons.mdiAccount }}</v-icon>
-                    </v-card-actions>
-                    <v-row align="center" justify="center">
-                      <v-col cols="12" sm="8" md="8">
-                        <v-form v-model="valid" lazy-validation ref="form">
-                          <v-text-field
-                            v-model="email"
-                            color="secondary"
-                            name="login"
-                            :rules="emailRules"
-                            type="text"
-                            placeholder="Email"
-                          />
+                                                <v-text-field class="pa" color="secondary" v-model="password" id="password" :rules="passwordRules" placeholder="Password" name="password" type="password" />
+                                                <v-text-field class="pa" color="secondary" id="password" v-model="repassword" :rules="rePasswordRules" placeholder="Confirm password" name="password" type="password" />
+                                                <v-card-actions class="mt-4 bts">
+                                                    <v-btn class="nr ml-2" text color="secondary" @click="dialog3 = false">Закрити</v-btn>
+                                                    <v-btn @click="OnRegister" class="nr elevation-0 mr-2" dark>Далі</v-btn>
+                                                </v-card-actions>
+                                            </v-form>
+                                        </v-col>
+                                    </v-row>
+                                </v-card>
+                            </v-dialog>
+                        </v-row>
+                        
 
-                          <v-text-field
-                            class="pa"
-                            color="secondary"
-                            v-model="password"
-                            id="password"
-                            :rules="passwordRules"
-                            placeholder="Password"
-                            name="password"
-                            type="password"
-                          />
-                          <v-text-field
-                            class="pa"
-                            color="secondary"
-                            id="password"
-                            v-model="repassword"
-                            :rules="rePasswordRules"
-                            placeholder="Confirm password"
-                            name="password"
-                            type="password"
-                          />
-                          <v-card-actions class="mt-4 bts">
-                            <v-btn
-                              class="nr ml-2"
-                              text
-                              color="secondary"
-                              @click="dialog3 = false"
-                            >Закрити</v-btn>
-                            <v-btn @click="OnRegister" class="nr elevation-0 mr-2" dark>Далі</v-btn>
-                          </v-card-actions>
-                        </v-form>
-                      </v-col>
-                    </v-row>
-                  </v-card>
-                </v-dialog>
-        <v-btn v-if="isUserLoggedIn" to="/" text @click="onLogout" class="black--text">Вийти</v-btn>
-        <v-btn v-if="isUserLoggedIn" to="/profile/settings">Профіль </v-btn>
-                
-              </v-row>
-            </v-list-item-title>
-            <!-- Register -->
-          </v-list-item>
-        </v-list>
-      </v-menu>
+                        <v-btn v-if="isUserLoggedIn" to="/" text @click="onLogout" class="black--text out">Вийти</v-btn>
+                        <v-btn v-if="isUserLoggedIn" to="/profile/settings">Профіль </v-btn>
+                    </v-list-item-title>
+                    <!-- Register -->
+                </v-list-item>
+            </v-list>
+        </v-menu>
     </v-app-bar>
     <v-content>
         <router-view></router-view>
@@ -243,78 +194,81 @@ import {
 } from "@mdi/js";
 
 export default {
-  name: "App",
-  data: () => ({
-    loader: null,
-    loading: false,
-    idef: "mdi-menu-down",
-    idw: "mdi-menu-down",
-    iup: "mdi-menu-up",
-    dialog: false,
-    dialog3: false,
-    recoverDialog: false,
-    email: "",
-    password: "",
-    valid: false,
-    repassword: "",
-    icons: {
-      mdiAccount
-    },
-    items: [{ title: "Вхід" }, { title: "Зареєструватись" }],
-    absolute: false
-  }),
+    name: "App",
+    data: () => ({
+        loader: null,
+        loading: false,
+        idef: "mdi-menu-down",
+        idw: "mdi-menu-down",
+        iup: "mdi-menu-up",
+        dialog: false,
+        dialog3: false,
+        recoverDialog: false,
+        email: "",
+        password: "",
+        valid: false,
+        repassword: "",
+        icons: {
+            mdiAccount
+        },
+        items: [{
+            title: "Вхід"
+        }, {
+            title: "Зареєструватись"
+        }],
+        absolute: false
+    }),
 
-  methods: {
-    closeError() {
-      this.$store.dispatch("clearError");
-    },
-    onLogout() {
-      console.log(this.isUserLoggedIn);
-      this.$store.dispatch("logoutUser").catch(error => {
-        console.log(error);
-      });
-      this.$router.push("/");
-    },
-    OnLogin() {
-
-      if (this.$refs.form.validate()) {
-        const user = {
-          email: this.email,
-          password: this.password
-        };
-        this.$store
-          .dispatch("loginUser", user)
-          .then(() => {
-            this.loader = "loading";
-            this.dialog = !this.dialog;
+    methods: {
+        closeError() {
+            this.$store.dispatch("clearError");
+        },
+        onLogout() {
+            console.log(this.isUserLoggedIn);
+            this.$store.dispatch("logoutUser").catch(error => {
+                console.log(error);
+            });
             this.$router.push("/");
-          })
-          .catch(err => console.log(err));
-      }
-    },
-    OnRegister() {
-      if (this.$refs.form.validate()) {
-        const reguser = {
-          email: this.email,
-          password: this.password
-        };
-        const user = {
-          email: this.email,
-          password: this.password,
-          courses: {}
-        };
+        },
+        OnLogin() {
+            if (this.$refs.form.validate()) {
+                const user = {
+                    email: this.email,
+                    password: this.password
+                };
+                this.$store
+                    .dispatch("loginUser", user)
+                    .then(() => {
+                        this.loader = "loading";
+                        this.dialog = !this.dialog;
+                        this.$router.push("/");
+                    })
+                    .catch(err => console.log(err));
+            }
+        },
+        OnRegister() {
+            if (this.$refs.form.validate()) {
+                const reguser = {
+                    email: this.email,
+                    password: this.password
+                };
+                const user = {
+                    email: this.email,
+                    password: this.password,
+                    courses: {}
+                };
 
-        this.$store
-          .dispatch("registerUser", reguser)
-          .then(() => {
-            fb.firestore()
-              .collection("User")
-              .add(user);
-            this.dialog3 = !this.dialog3;
-            this.$router.push("/");
-        })
-      }
-    },
+                this.$store
+                    .dispatch("registerUser", reguser)
+                    .then(() => {
+                        fb.firestore()
+                            .collection("User")
+                            .add(user);
+                        this.dialog3 = !this.dialog3;
+                        this.$router.push("/");
+                    })
+            }
+        },
         recover() {
             if (this.$refs.form.validate()) {
                 this.$store.dispatch('recoverUser', this.email)
@@ -611,5 +565,9 @@ export default {
 
 .recover-dialog {
     height: 230px;
+}
+
+.menuable__content__active {
+    margin-top: 25px;
 }
 </style>

@@ -6,6 +6,7 @@ import store from '../store/index'
 import * as fb from 'firebase'
 import Settings from '@/components/Settings'
 import UserCoures from '@/components/UserCourses'
+import Lessons from '@/components/Lessons'
 Vue.use(VueRouter)
 
 const routes = [{
@@ -43,8 +44,6 @@ const routes = [{
     path: '/recover',
     name: 'recover',
     component: () => import('@/components/Recover')
-
-
   },
   {
     path: '/courses/:id',
@@ -88,38 +87,37 @@ const routes = [{
   },
   {
 
-        path:'/profile',
-        name:'profile',
-        component: () => import ('@/components/Profile'),
-        children:[
-          {
-            path:'/profile/settings',
-            component: Settings,
-            async beforeEnter(to, from, next){
-              await  router.app.$store.dispatch('getUserPhoto')  
-            await  router.app.$store.dispatch('getUserName')
-            await  router.app.$store.dispatch('getUserBirthDay')
-              next()
-            }
-          },
-          {
-            path:'/profile/courses',
-            component: UserCoures,
-            async  beforeEnter(to, from, next){
-           await  router.app.$store.dispatch('getMyCourses')
-              next()
-            }
-          }
-        ]
-      
+    path: '/profile',
+    name: 'profile',
+    component: () => import('@/components/Profile'),
+    children: [{
+        path: '/profile/settings',
+        component: Settings,
+        async beforeEnter(to, from, next) {
+          await router.app.$store.dispatch('getUserPhoto')
+          await router.app.$store.dispatch('getUserName')
+          await router.app.$store.dispatch('getUserBirthDay')
+          next()
+        }
+      },
+      {
+        path: '/profile/courses',
+        component: UserCoures,
+        async beforeEnter(to, from, next) {
+          await router.app.$store.dispatch('getMyCourses')
+          next()
+        }
       }
-    
+    ]
 
-  
+  },
+  {
+    path: '/lessons',
+    name: 'lessons',
+    component: () => import('@/components/Lessons'),
 
-
+  }
 ]
-
 
 const router = new VueRouter({
   mode: 'history',

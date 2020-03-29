@@ -1,144 +1,151 @@
-import  * as fb from 'firebase'
-export default{
-    state:{
-        course:[],
-        description:'',
-        src:'',
-        categories:[]
-          },
-          mutations:{
-  setCourse(state,payload){
-      state.course=payload
-  },
-  setDesc(state,payload){
-      state.description=payload
-  },
-  setSrc(state,payload){ 
-      state.src=payload
-  },
-  setCat(state,payload){
-    state.categories=payload
-}
-          },
-          
-
-    actions:{
-addCourse({commit},payload){
-
-var uid= null;
-var udata = null;    
-var fless = new Set();
-fb.firestore().collection("User").where("email","==",fb.auth().currentUser.email).get()
-.then(
-
-    user=>{
-        console.log("User Data")
-        user.forEach(
-            u=>{
-
-            uid= u.id
-            udata=u.data()
-            console.log(u.data())
-            }
-        )
-        console.log(udata.courses[payload.course])
-        if(udata.courses[payload.course]){
-   console.log("Already in")
-    }
-    else{
-console.log("in else");
-console.log("udata.courses",udata.courses[payload.course])
-
-        fb.firestore().collection("User").doc(uid).firestore.set({
-            courses:{
-
-                [payload.course]:{  
-                ctitle:payload.title,
-                cprogress:0,
-                currentlesson:0,
-                lprogress:0 ,
-                flessons: []
-            }
-
-            }
-
-
-        },{merge:true})
-
-
-    }
-    }
-)
-
-
-
-},
-setCat({commit},payload){
- var tcourses=[]
-fb.firestore().collection('Courses').get()
-.then(
-courses=>{
-
-    courses.forEach(
-        course=>{
-
-  tcourses.push(course.data().category) 
-            
-        }
-
-
-
-    )
-    console.log("All courses",tcourses)
-    commit("setCat",tcourses)
-} 
-
-)
-
-
-},
-setCourse({commit},payload){
-    
-var tcourse;   
-fb.firestore().collection("Courses").where("category","==",payload).get()
-.then(
-
-    course=>{
- course.forEach(
-    data=>{
-        console.log("Course data:",data.data())
-        tcourse=data.data();
-        
-    }
- )
-
- 
- console.log('Returned data',tcourse)
- commit("setCourse",tcourse)
-    }
-)
-
-
-
-},
-
-
-
-
-
-        
+import * as fb from 'firebase'
+export default {
+    state: {
+        course: [],
+        description: '',
+        src: '',
+        categories: []
     },
-    getters:{
-        getCourse(state){
-         return state.course
+    mutations: {
+        setCourse(state, payload) {
+            state.course = payload
         },
-        getCat(state){
-         
-        return state.categories
+        setDesc(state, payload) {
+            state.description = payload
+        },
+        setSrc(state, payload) {
+            state.src = payload
+        },
+        setCat(state, payload) {
+            state.categories = payload
+        }
+    },
+
+
+    actions: {
+        addCourse({
+            commit
+        }, payload) {
+
+            var uid = null;
+            var udata = null;
+            var fless = new Set();
+            fb.firestore().collection("User").where("email", "==", fb.auth().currentUser.email).get()
+                .then(
+
+                    user => {
+                        console.log("User Data")
+                        user.forEach(
+                            u => {
+
+                                uid = u.id
+                                udata = u.data()
+                                console.log(u.data())
+                            }
+                        )
+                        console.log(udata.courses[payload.course])
+                        if (udata.courses[payload.course]) {
+                            console.log("Already in")
+                        } else {
+                            console.log("in else");
+                            console.log("udata.courses", udata.courses[payload.course])
+
+                            fb.firestore().collection("User").doc(uid).firestore.set({
+                                courses: {
+
+                                    [payload.course]: {
+                                        ctitle: payload.title,
+                                        cprogress: 0,
+                                        currentlesson: 0,
+                                        lprogress: 0,
+                                        flessons: []
+                                    }
+
+                                }
+
+
+                            }, {
+                                merge: true
+                            })
+
+
+                        }
+                    }
+                )
+
+
+
+        },
+        setCat({
+            commit
+        }, payload) {
+            var tcourses = []
+            fb.firestore().collection('Courses').get()
+                .then(
+                    courses => {
+
+                        courses.forEach(
+                            course => {
+
+                                tcourses.push(course.data().category)
+
+                            }
+
+
+
+                        )
+                        console.log("All courses", tcourses)
+                        commit("setCat", tcourses)
+                    }
+
+                )
+
+
+        },
+        setCourse({
+            commit
+        }, payload) {
+
+            var tcourse;
+            fb.firestore().collection("Courses").where("category", "==", payload).get()
+                .then(
+
+                    course => {
+                        course.forEach(
+                            data => {
+                                console.log("Course data:", data.data())
+                                tcourse = data.data();
+
+                            }
+                        )
+
+
+                        console.log('Returned data', tcourse)
+                        commit("setCourse", tcourse)
+                    }
+                )
+
+
+
+        },
+
+
+
+
+
+
+    },
+    getters: {
+        getCourse(state) {
+            return state.course
+        },
+        getCat(state) {
+
+            return state.categories
         }
 
 
-}
+    }
 }
 /*
 export default{
@@ -306,4 +313,4 @@ setSrc(state,payload){
    
         
         }
-*/        
+*/
