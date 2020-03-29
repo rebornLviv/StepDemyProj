@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import * as fb from 'firebase'
 export default {
     state: {
@@ -10,12 +11,74 @@ export default {
             state.lessons = payload
         },
         setCurrentLesson(state, payload) {
+=======
+import  * as fb from 'firebase'
+export default{
+   state:{
+        lessons:[],
+        currentlesson:0,
+        currenttime:0,
+        allLessons:[],
+        topLessons:[]
+        },
+        mutations:{
+            setLessons(state,payload){
+                state.lessons=payload
+            },
+            setCurrentLesson(state,payload){
+       
+                state.currentlesson=payload
+            },
+            setCurrentTime(state,payload){
+                state.currenttime=payload;
+            },
+            setAllLessons(state,payload){
+
+                state.allLessons = payload
+            },
+            setTopLessons(state,payload){
+
+                state.topLessons = payload
+            }
+            
+>>>>>>> 86ac634eb14b2c61058d4be39196535d61cebb73
 
             state.currentlesson = payload
         },
+<<<<<<< HEAD
         setCurrentTime(state, payload) {
             state.currenttime = payload;
         }
+=======
+        actions:{
+            setInitialState({commit},payload){
+                commit('setLessons',[])
+                commit('setCurrentLesson',0)
+                commit('setCurrentTime',0)
+
+            },
+            setLessons({commit},payload){
+                console.log('c-l',payload)
+                let lessons=[]
+                let id=''
+                fb.firestore().collection('Courses').where('category','==',payload.course).get()
+               .then(
+                  cdata=>{
+                
+                      cdata.forEach(
+                          el=>{
+                              console.log("elid",el.id)
+                              id=el.id
+                          }
+                      )
+                      fb.firestore().collection('Courses').doc(id).collection('Lessons').where('cat','==',payload.lesson).get()
+                      .then( dat =>{
+                        console.log('lesson data :')
+                        dat.forEach(
+                            el=>{
+                   lessons.push(el.data())             
+                                console.log(el.data())
+>>>>>>> 86ac634eb14b2c61058d4be39196535d61cebb73
 
 
     },
@@ -36,6 +99,7 @@ export default {
                                 id = el.id
                             }
                         )
+<<<<<<< HEAD
                         fb.firestore().collection('Courses').doc(id).collection('Lessons').where('cat', '==', payload.lesson).get()
                             .then(dat => {
                                 console.log('lesson data :')
@@ -57,18 +121,47 @@ export default {
         }, payload) {
             let current;
             fb.firestore().collection("User").where("email", "==", fb.auth().currentUser.email).get()
+=======
+                        console.log("Course Lessons",lessons)
+                        commit('setLessons',lessons)
+                      })
+                  }
+            
+                   
+               )
+                
+                
+               
+            },
+            getCurrentLesson({commit},payload){
+                let current;
+                console.log('CurrentLessonPayload',payload)
+                let email  = fb.auth().currentUser.email;
+                fb.firestore().collection("User").where("email","==",email).get()
+>>>>>>> 86ac634eb14b2c61058d4be39196535d61cebb73
                 .then(
 
                     user => {
                         user.forEach(
+<<<<<<< HEAD
                             data => {
                                 console.log("Currrent", data.data().courses[payload])
                                 current = data.data().courses[payload]
                                 commit("setCurrentLesson", current)
+=======
+                            data=>{
+                               
+                        console.log("Currrent",data.data().courses[payload].currentlesson)
+                             current=data.data().courses[payload].currentlesson
+                             commit("setCurrentLesson",current)
+                             commit('setCurrentTime',data.data().courses[payload].lprogress)
+                                
+>>>>>>> 86ac634eb14b2c61058d4be39196535d61cebb73
                             }
                         )
                     }
                 )
+<<<<<<< HEAD
 
         },
         updateLesson({
@@ -78,6 +171,39 @@ export default {
             let finished = []
             let flessons = []
             console.log("payload finished", payload.flessons.length);
+=======
+                
+                },
+                updateLesson({commit},payload){
+                   let  uid=""
+                   let finished=[]
+                   let flessons=[]
+                   console.log("payload finished",payload.flessons.length);
+                   console.log("payload Currles",payload.currentLesson);
+                   
+                 //  let cprogr=(payload.flessons.size * (100/payload.amount)) +'%'
+                    fb.firestore().collection("User").where("email","==",fb.auth().currentUser.email).get()
+                    .then(
+                        user=>{
+                            user.forEach(
+                                el=>{
+
+                                  uid = el.id
+                                  flessons= el.data().courses[payload.course].flessons
+                                }
+                            )
+                            console.log("db flessons",flessons)
+                            console.log('payload.fless', payload.flessons)
+                            for (let x of payload.flessons){
+                                if(!flessons.includes(x)){
+                                 flessons.push(x) 
+                                 console.log('beforeInserted',flessons)  
+                            fb.firestore().collection("User").doc(uid).set({
+                                courses:{
+                                [payload.course]:{
+                                    flessons: flessons
+                                }
+>>>>>>> 86ac634eb14b2c61058d4be39196535d61cebb73
 
             //  let cprogr=(payload.flessons.size * (100/payload.amount)) +'%'
             fb.firestore().collection("User").where("email", "==", fb.auth().currentUser.email).get()
@@ -146,6 +272,191 @@ export default {
 
         }
 
+<<<<<<< HEAD
+=======
+                },
+                async finishedLessons({commit},payload){
+                    let email = fb.auth().currentUser.email;
+                    let id  = '' ;
+                    let flessons = [];
+                  await   fb.firestore().collection('User').where("email","==",email).get()
+                    .then(
+                        udata=>{
+                            udata.forEach(
+                                u=>{
+                                  id = u.id;
+                                  flessons = u.data().courses[payload.course].flessons
+                                }
+                            )
+                            for (let x of payload.flessons){
+                                if(!flessons.includes(x)){
+                                 flessons.push(x) 
+                                 console.log('beforeInserted',flessons)  
+                            fb.firestore().collection("User").doc(id).set({
+                                courses:{
+                                [payload.course]:{
+                                    flessons: flessons,
+                                    
+                                }
+        
+                            }
+                        },{merge:true})
+                    }
+                    }
+                        }
+                    )
+
+                 
+                },
+                setProgress({commit},payload){
+                    let email = fb.auth().currentUser.email
+                    let id = ''
+                  let  finished = []
+                    fb.firestore().collection('User').where("email","==",email).get()
+                    .then(
+                        udata=>{
+                            udata.forEach(
+                                u=>{
+                                  id =  u.id
+                                  finished = u.data().courses[payload.course].flessons
+                                }
+                            )
+                            console.log('LenOfArray',finished.length)
+                            console.log('totalVids',payload.amount)
+                            fb.firestore().collection('User').doc(id).set({
+
+                                courses:{
+                                    [payload.course]:{
+                                        cprogress:(finished.length * (100/payload.amount)) +"%",
+                                        
+                                    }
+                                }
+
+                            },{merge:true})
+                        }
+                    )
+                },
+                rateLesson({commit},payload){
+                    let email = fb.auth().currentUser.email
+                    let cid = ''
+                    let lid = ''
+                    let allRates = []
+                    let ratings = {}
+                    let overalRating = null;
+                    fb.firestore().collection('Courses').where("category","==",payload.category).get()
+                    .then(
+                        courseData=>{
+                            courseData.forEach(
+                                c=>{
+                                    cid = c.id
+
+                                    
+                                 fb.firestore().collection('Courses').doc(cid).collection('Lessons').where("videoUrl","==",payload.videoUrl).get()
+                                 .then(
+                                     lessonData=>{
+
+                                        lessonData.forEach(
+                                            l=>{
+                                                lid = l.id
+                                            }
+                                        )
+                                    fb.firestore().collection('Courses').doc(cid).collection('Lessons').doc(lid).set(
+                                            {
+                                                ratings:{
+                                                    [email]:payload.rating
+                                                }
+                                            },{merge:true}
+                                            ).then(
+                                                ()=>{
+                                                    fb.firestore().collection('Courses').doc(cid).collection('Lessons').where("videoUrl","==",payload.videoUrl).get()
+                                                    .then(
+                                                        lData=>{
+                                                            lData.forEach(
+                                                                l=>{
+                                                                    ratings = l.data().ratings
+                                                                }
+                                                            )
+                                                            console.log('ratings',ratings)    
+                                                            for(let key in ratings ){
+                                                              allRates.push(ratings[key]) 
+                                                              console.log('key',key) 
+                                                            }
+                                                            var sum = 0;
+                                                            for (let x of allRates){
+                                                                sum+=x;
+
+                                                            }
+                                                            console.log('sum',sum)
+                                                            console.log('allRates',allRates)
+                                                            overalRating = sum/allRates.length
+                                                            fb.firestore().collection('Courses').doc(cid).collection('Lessons').doc(lid).set({
+
+                                                            rating:overalRating
+                                                            },{merge:true})
+                                                        }
+                                                    )
+
+                                                }
+                                            )
+                                     }
+                                 )   
+                                }
+                            )
+                        }
+                    )
+                    
+
+                },
+
+
+                getAllLessons({commit},payload){
+                    let all = [] 
+                    commit('setLoading',true)
+                    fb.firestore().collectionGroup('Lessons').get().then(
+
+                        lessons=>{
+                            lessons.docs.forEach(
+                                l=>{
+
+                                    console.log('lessons',l.data())
+                                    all.push(l.data())
+                                }
+                               
+                            )
+                            console.log('allllllllllll',all)
+                            commit('setAllLessons',all)
+                            commit('setLoading',false)
+                        }
+                            )
+                        },
+                        getTopLessons({commit},payload){
+
+                            let top = [] 
+                            commit('setLoading',true)
+                            fb.firestore().collectionGroup('Lessons').orderBy('rating','desc').limit(12).get().then(
+        
+                                lessons=>{
+                                    lessons.docs.forEach(
+                                        l=>{
+        
+                                            console.log('lessons',l.data())
+                                            top.push(l.data())
+                                        }
+                                       
+                                    )
+                                    console.log('allllllllllll',top)
+                                    commit('setTopLessons',top)
+                                    commit('setLoading',false)
+                                }
+                                    )
+
+
+
+
+                        }
+                
+                
+>>>>>>> 86ac634eb14b2c61058d4be39196535d61cebb73
 
     },
 
@@ -153,6 +464,7 @@ export default {
         getLessons(state) {
             return state.lessons
         },
+<<<<<<< HEAD
         getCurrentLesson(state) {
             return state.currentlesson
         },
@@ -161,6 +473,28 @@ export default {
         }
 
     }
+=======
+       
+        getters:{
+            getLessons(state){
+                return state.lessons
+               },
+            getCurrentLesson(state){
+               return state.currentlesson 
+            },
+            getCurrentTime(state){
+                return state.currenttime
+            },
+            getAllLessons(state){
+                return state.allLessons
+
+            },
+            getTopLessons(state){
+                return state.topLessons
+            }
+               
+   }
+>>>>>>> 86ac634eb14b2c61058d4be39196535d61cebb73
 
     /*  actions:{
            ,
