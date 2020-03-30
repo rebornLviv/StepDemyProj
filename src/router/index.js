@@ -6,11 +6,8 @@ import store from '../store/index'
 import * as fb from 'firebase'
 import Settings from '@/components/Settings'
 import UserCoures from '@/components/UserCourses'
-<<<<<<< HEAD
-import Lessons from '@/components/Lessons'
-=======
 import Course from '@/components/Courses'
->>>>>>> 86ac634eb14b2c61058d4be39196535d61cebb73
+import Lessons from '@/components/Lessons'
 Vue.use(VueRouter)
 
 const routes = [{
@@ -19,23 +16,23 @@ const routes = [{
     component: Home,
     beforeEnter: async (to, from, next) => {
       // ...
-      setTimeout(()=>{
+      setTimeout(() => {
         router.app.$store.dispatch('getAllLessons').then(
 
-          ()=>{
+          () => {
             router.app.$store.dispatch('getTopLessons').then(
-              ()=>{
+              () => {
                 next()
               }
 
             )
-            
+
           }
         )
 
 
-      },1000)
-      
+      }, 1000)
+
     }
   },
   {
@@ -58,11 +55,13 @@ const routes = [{
     path: '/recover',
     name: 'recover',
     component: () => import('@/components/Recover')
+
+
   },
   {
     path: '/courses/:id',
     name: 'course',
-   
+
     component: () => import('@/components/Course'),
   },
   {
@@ -72,8 +71,8 @@ const routes = [{
     path: '/courses/:id/:id',
     name: 'lesson',
     component: () => import('@/components/Lesson'),
-    beforeRouteEnter (to, from, next) {
-    
+    beforeRouteEnter(to, from, next) {
+
       router.app.$store.dispatch()
     }
 
@@ -107,10 +106,10 @@ const routes = [{
   {
     path: '/lessons',
     name: 'lessons',
-    component: () => import('@/components/Lessons'),
-
+    component: () => import('@/components/Lessons')
   }
 ]
+
 
 const router = new VueRouter({
   mode: 'history',

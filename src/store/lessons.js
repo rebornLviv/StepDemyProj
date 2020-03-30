@@ -1,17 +1,3 @@
-<<<<<<< HEAD
-import * as fb from 'firebase'
-export default {
-    state: {
-        lessons: [],
-        currentlesson: [],
-        currenttime: 0
-    },
-    mutations: {
-        setLessons(state, payload) {
-            state.lessons = payload
-        },
-        setCurrentLesson(state, payload) {
-=======
 import  * as fb from 'firebase'
 export default{
    state:{
@@ -41,15 +27,8 @@ export default{
                 state.topLessons = payload
             }
             
->>>>>>> 86ac634eb14b2c61058d4be39196535d61cebb73
 
-            state.currentlesson = payload
         },
-<<<<<<< HEAD
-        setCurrentTime(state, payload) {
-            state.currenttime = payload;
-        }
-=======
         actions:{
             setInitialState({commit},payload){
                 commit('setLessons',[])
@@ -78,50 +57,9 @@ export default{
                             el=>{
                    lessons.push(el.data())             
                                 console.log(el.data())
->>>>>>> 86ac634eb14b2c61058d4be39196535d61cebb73
 
-
-    },
-    actions: {
-        setLessons({
-            commit
-        }, payload) {
-            console.log('c-l', payload)
-            let lessons = []
-            let id = ''
-            fb.firestore().collection('Courses').where('category', '==', payload.course).get()
-                .then(
-                    cdata => {
-
-                        cdata.forEach(
-                            el => {
-                                console.log("elid", el.id)
-                                id = el.id
                             }
                         )
-<<<<<<< HEAD
-                        fb.firestore().collection('Courses').doc(id).collection('Lessons').where('cat', '==', payload.lesson).get()
-                            .then(dat => {
-                                console.log('lesson data :')
-                                dat.forEach(
-                                    el => {
-                                        lessons.push(el.data())
-                                        console.log(el.data())
-
-                                    }
-                                )
-                                console.log("Course Lessons", lessons)
-                                commit('setLessons', lessons)
-                            })
-                    }
-                )
-        },
-        getCurrentLesson({
-            commit
-        }, payload) {
-            let current;
-            fb.firestore().collection("User").where("email", "==", fb.auth().currentUser.email).get()
-=======
                         console.log("Course Lessons",lessons)
                         commit('setLessons',lessons)
                       })
@@ -138,17 +76,10 @@ export default{
                 console.log('CurrentLessonPayload',payload)
                 let email  = fb.auth().currentUser.email;
                 fb.firestore().collection("User").where("email","==",email).get()
->>>>>>> 86ac634eb14b2c61058d4be39196535d61cebb73
                 .then(
-
-                    user => {
+        
+                    user=>{
                         user.forEach(
-<<<<<<< HEAD
-                            data => {
-                                console.log("Currrent", data.data().courses[payload])
-                                current = data.data().courses[payload]
-                                commit("setCurrentLesson", current)
-=======
                             data=>{
                                
                         console.log("Currrent",data.data().courses[payload].currentlesson)
@@ -156,22 +87,10 @@ export default{
                              commit("setCurrentLesson",current)
                              commit('setCurrentTime',data.data().courses[payload].lprogress)
                                 
->>>>>>> 86ac634eb14b2c61058d4be39196535d61cebb73
                             }
                         )
                     }
                 )
-<<<<<<< HEAD
-
-        },
-        updateLesson({
-            commit
-        }, payload) {
-            let uid = ""
-            let finished = []
-            let flessons = []
-            console.log("payload finished", payload.flessons.length);
-=======
                 
                 },
                 updateLesson({commit},payload){
@@ -203,77 +122,48 @@ export default{
                                 [payload.course]:{
                                     flessons: flessons
                                 }
->>>>>>> 86ac634eb14b2c61058d4be39196535d61cebb73
 
-            //  let cprogr=(payload.flessons.size * (100/payload.amount)) +'%'
-            fb.firestore().collection("User").where("email", "==", fb.auth().currentUser.email).get()
-                .then(
-                    user => {
-                        user.forEach(
-                            el => {
-
-                                uid = el.id
-                                flessons = el.data().courses[payload.course].flessons
                             }
-                        )
-                        console.log("db flessons", flessons)
-                        for (let x in payload.flessons) {
-                            if (!flessons.includes(x)) {
-                                fb.firestore().collection("User").doc(uid).set({
-                                    courses: {
-                                        [payload.course]: {
-                                            flessons: fb.firestore.FieldValue.arrayUnion(Number(x))
-                                        }
-
-                                    }
-                                }, {
-                                    merge: true
-                                })
-                            }
-                        }
-                        fb.firestore().collection("User").doc(uid).get()
+                        },{merge:true})
+                    }
+                    }
+                            fb.firestore().collection("User").doc(uid).get()
                             .then(
-                                data => {
+                                data=>{
 
-                                    finished = data.data().courses[payload.course].flessons
+                                  finished=data.data().courses[payload.course].flessons
 
-                                    fb.firestore().collection("User").doc(uid).set({
-                                        courses: {
-
-                                            [payload.course]: {
-                                                currentlesson: payload.currentLesson,
-                                                lprogress: payload.currentTime,
-                                                cprogress: (finished.length * (100 / payload.amount)) + "%",
-
-
-                                            }
+                                  fb.firestore().collection("User").doc(uid).set({
+                                    courses:{
+        
+                                        [payload.course]:{
+                                    currentlesson:payload.currentLesson,
+                                    lprogress:payload.currentTime,
+                                    cprogress:(finished.length * (100/payload.amount)) +"%" ,
+                                       
+        
                                         }
-
-
-
-
-
-                                    }, {
-                                        merge: true
-                                    })
+                                    }
+        
+        
+        
+        
+        
+                                    },{merge:true})  
                                 }
 
 
 
                             )
-                        console.log(finished)
-                        console.log("finished.length", finished.length)
-                        console.log("progress", (finished.length * (100 / payload.amount)) + "%");
+                            console.log(finished)
+                            console.log("finished.length",finished.length)
+                            console.log("progress",(finished.length * (100/payload.amount)) +"%");
+                            
+                             
+                        }
 
+                    )
 
-                    }
-
-                )
-
-        }
-
-<<<<<<< HEAD
-=======
                 },
                 async finishedLessons({commit},payload){
                     let email = fb.auth().currentUser.email;
@@ -456,24 +346,9 @@ export default{
                         }
                 
                 
->>>>>>> 86ac634eb14b2c61058d4be39196535d61cebb73
 
-    },
 
-    getters: {
-        getLessons(state) {
-            return state.lessons
         },
-<<<<<<< HEAD
-        getCurrentLesson(state) {
-            return state.currentlesson
-        },
-        getCurrentTime(state) {
-            return state.currenttime
-        }
-
-    }
-=======
        
         getters:{
             getLessons(state){
@@ -494,9 +369,8 @@ export default{
             }
                
    }
->>>>>>> 86ac634eb14b2c61058d4be39196535d61cebb73
 
-    /*  actions:{
+       /*  actions:{
            ,
             getUserLesson({commit},{less,cs}){
                 let cid=''
@@ -598,4 +472,5 @@ export default{
        
    
         */
-}
+        }
+

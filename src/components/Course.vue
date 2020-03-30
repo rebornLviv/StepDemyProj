@@ -1,9 +1,4 @@
 <template>
-<<<<<<< HEAD
-<v-content>
-    <v-container class="fill-height" fluid>
-        <v-row align="center" justify="center">
-=======
     <v-content>
  <v-container
         class="fill-height"
@@ -34,7 +29,6 @@ align="center"
 <v-btn dark color="green darken-1"  @click="manageCourse"> Get started</v-btn>
 
           </v-col>
->>>>>>> 86ac634eb14b2c61058d4be39196535d61cebb73
 
         </v-row>
 
@@ -68,19 +62,6 @@ export default {
         }
     },
     methods: {
-<<<<<<< HEAD
-        manageCourse() {
-            console.log('manage')
-            //const email=fb.auth().currentUser.email;
-            // console.log(type(id))
-            let course = this.$route.path.replace('/courses/', '')
-            let title = this.course.title.replace(" ", '')
-            this.$store.dispatch('addCourse', {
-                course,
-                title
-            })
-        }
-=======
     async  manageCourse(){
       
       console.log('manage')
@@ -97,7 +78,6 @@ let title = this.course.title.split(' ').join('')
    
         // this.$store.dispatch('getCurrentLesson',)
       }
->>>>>>> 86ac634eb14b2c61058d4be39196535d61cebb73
     },
     computed: {
         userId() {
@@ -109,17 +89,7 @@ let title = this.course.title.split(' ').join('')
         },
 
     },
-<<<<<<< HEAD
-    beforeCreate() {
-
-    },
-    created() {
-
-    },
-    /* updated(){
-=======
    /* updated(){
->>>>>>> 86ac634eb14b2c61058d4be39196535d61cebb73
         this.$store.dispatch('setTitle',this.$route.path.replace('/courses/',''))
         this.$store.dispatch('setDesc',this.$route.path.replace('/courses/',''))
 this.$store.dispatch('setDesc',this.$route.path.replace('/courses/',''))
@@ -137,8 +107,6 @@ this.$store.dispatch('setDesc',this.$route.path.replace('/courses/',''))
         }
 
     },
-<<<<<<< HEAD
-=======
    async beforeCreate(){
 console.log("Course",this.$store.getters.getCourse)
 
@@ -157,7 +125,6 @@ console.log("Course",this.$store.getters.getCourse)
     }
   
     
->>>>>>> 86ac634eb14b2c61058d4be39196535d61cebb73
 
 }
 </script>

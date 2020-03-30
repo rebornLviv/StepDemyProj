@@ -1,8 +1,11 @@
-<<<<<<< HEAD
 import * as fb from 'firebase'
 export default {
     state: {
-        course: [],
+        course: {
+            title: '',
+            description: '',
+            imgSrc: ''
+        },
         description: '',
         src: '',
         categories: []
@@ -21,132 +24,65 @@ export default {
             state.categories = payload
         }
     },
-=======
-import  * as fb from 'firebase'
-export default{
-    state:{
-        course:{title:'',description:'',imgSrc:''},
-        description:'',
-        src:'',
-        categories:[]
-          },
-          mutations:{
-  setCourse(state,payload){
-      state.course=payload
-  },
-  setDesc(state,payload){
-      state.description=payload
-  },
-  setSrc(state,payload){ 
-      state.src=payload
-  },
-  setCat(state,payload){
-    state.categories=payload
-}
-          },
-          
-
-    actions:{
-async  addCourse({commit},payload){
-console.log('Maaaaaaaaaaaaaaaaaaaaanaging')
-var uid= '';
-var udata = null;    
-let email = fb.auth().currentUser.email;
-console.log(email)
-fb.firestore().collection("User").where("email","==",email).get()
-.then(
-
-     (user)=>{
-        console.log("User Data")
-        user.forEach(
-            u=>{
-            uid= u.id
-            udata=u.data()
-            console.log(u.data())
-            }
-        )
-        console.log(udata)
-        if(udata.courses[payload.course]){
-   console.log("Already in")
-    }
-    else{
-console.log("in else");
-console.log('AddCoursePayload',payload)
-console.log("udata.courses",udata.courses[payload.course])
-console.log('userId',uid)
-
-        fb.firestore().collection("User").doc(uid).set({
-            courses:{
-
-                [payload.course]:{  
-                ctitle:payload.title,
-                cprogress:0,
-                currentlesson:0,
-                lprogress:0 ,
-                flessons: []
-            }
->>>>>>> 86ac634eb14b2c61058d4be39196535d61cebb73
 
 
     actions: {
-        addCourse({
+        async addCourse({
             commit
         }, payload) {
-
-<<<<<<< HEAD
-            var uid = null;
+            console.log('Maaaaaaaaaaaaaaaaaaaaanaging')
+            var uid = '';
             var udata = null;
-            var fless = new Set();
-            fb.firestore().collection("User").where("email", "==", fb.auth().currentUser.email).get()
+            let email = fb.auth().currentUser.email;
+            console.log(email)
+            fb.firestore().collection("User").where("email", "==", email).get()
                 .then(
-=======
-        },{merge:true})
-        .then(
-            ()=>{
-                console.log('success')
-            }
-        )
-        .catch(
-            err=>{
-                console.log("err",err)
-            }
-        )
->>>>>>> 86ac634eb14b2c61058d4be39196535d61cebb73
 
-                    user => {
+                    (user) => {
                         console.log("User Data")
                         user.forEach(
                             u => {
-
                                 uid = u.id
                                 udata = u.data()
                                 console.log(u.data())
                             }
                         )
-                        console.log(udata.courses[payload.course])
+                        console.log(udata)
                         if (udata.courses[payload.course]) {
                             console.log("Already in")
                         } else {
                             console.log("in else");
+                            console.log('AddCoursePayload', payload)
                             console.log("udata.courses", udata.courses[payload.course])
+                            console.log('userId', uid)
 
-                            fb.firestore().collection("User").doc(uid).firestore.set({
-                                courses: {
+                            fb.firestore().collection("User").doc(uid).set({
+                                    courses: {
 
-                                    [payload.course]: {
-                                        ctitle: payload.title,
-                                        cprogress: 0,
-                                        currentlesson: 0,
-                                        lprogress: 0,
-                                        flessons: []
+                                        [payload.course]: {
+                                            ctitle: payload.title,
+                                            cprogress: 0,
+                                            currentlesson: 0,
+                                            lprogress: 0,
+                                            flessons: []
+                                        }
+
                                     }
 
-                                }
 
-
-                            }, {
-                                merge: true
-                            })
+                                }, {
+                                    merge: true
+                                })
+                                .then(
+                                    () => {
+                                        console.log('success')
+                                    }
+                                )
+                                .catch(
+                                    err => {
+                                        console.log("err", err)
+                                    }
+                                )
 
 
                         }
@@ -178,32 +114,14 @@ console.log('userId',uid)
                         commit("setCat", tcourses)
                     }
 
-<<<<<<< HEAD
                 )
-=======
-},
-setCourse({commit},payload){
-    console.log('settingCourses',payload)
-var tcourse;   
-fb.firestore().collection("Courses").where("category","==",payload).get()
-.then(
-
-    course=>{
- course.forEach(
-    data=>{
-        console.log("Course data:",data.data())
-        tcourse=data.data();
-        
-    }
- )
->>>>>>> 86ac634eb14b2c61058d4be39196535d61cebb73
 
 
         },
         setCourse({
             commit
         }, payload) {
-
+            console.log('settingCourses', payload)
             var tcourse;
             fb.firestore().collection("Courses").where("category", "==", payload).get()
                 .then(
