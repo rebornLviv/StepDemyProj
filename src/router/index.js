@@ -55,13 +55,10 @@ const routes = [{
     path: '/recover',
     name: 'recover',
     component: () => import('@/components/Recover')
-
-
   },
   {
     path: '/courses/:id',
     name: 'course',
-
     component: () => import('@/components/Course'),
   },
   {
@@ -72,13 +69,11 @@ const routes = [{
     name: 'lesson',
     component: () => import('@/components/Lesson'),
     beforeRouteEnter(to, from, next) {
-
       router.app.$store.dispatch()
     }
 
   },
   {
-
     path: '/profile',
     name: 'profile',
     component: () => import('@/components/Profile'),
@@ -101,12 +96,16 @@ const routes = [{
         }
       }
     ]
-
   },
   {
     path: '/lessons',
     name: 'lessons',
     component: () => import('@/components/Lessons')
+  },
+  {
+    path: '/teachers',
+    name: 'teachers',
+    component: () => import('@/components/Teachers')
   }
 ]
 

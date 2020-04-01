@@ -1,7 +1,6 @@
 <template>
 <v-col cols="8" class="userData">
     <p class="txtp">Мої курси</p>
-
     <div class="courseCont">
         <v-card class="course" v-for="x in userCourses " :key="x.title">
             <p>{{x.title}}</p>
@@ -17,18 +16,12 @@
 <script>
 export default {
     data: () => ({
-
         confP: false
-
     }),
-
     methods: {
-
         configuratePassword() {
             this.confP = !this.confP
-
         }
-
     },
     computed: {
         userCourses() {

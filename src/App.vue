@@ -6,24 +6,16 @@
         </div>
         <div class="navitems">
             <div>
-                <v-menu offset-y>
-                    <template v-slot:activator="{on}">
-                        <v-btn text v-on="on">
-                            <span class="black--text">Категорії</span>
-                            <v-icon class="grey--text">{{idef}}</v-icon>
-                        </v-btn>
-                    </template>
-                    <v-list>
-                        <v-list-item v-for="cat in categories" :key="cat" @click="setCourses(cat)">{{cat}}</v-list-item>
-                    </v-list>
-                </v-menu>
+                <v-btn text to="/teachers">
+                    <span class="black--text">Викладачі</span>
+                </v-btn>
             </div>
 
             <div>
                 <v-menu offset-y>
                     <template v-slot:activator="{on}">
                         <v-btn text v-on="on">
-                            <span class="black--text">Категорії</span>
+                            <span class="black--text">Курси</span>
 
                             <v-icon class="grey--text">{{idef}}</v-icon>
                         </v-btn>
@@ -35,7 +27,7 @@
             </div>
 
             <div>
-                <v-btn to="/lessons" color="dark--text" >Предмети</v-btn>
+                <v-btn to="/lessons" color="dark--text">Уроки</v-btn>
             </div>
         </div>
         <v-btn text class="grey--text">
@@ -236,7 +228,6 @@ export default {
             this.$router.push("/");
         },
         OnLogin() {
-
             if (this.$refs.form.validate()) {
                 const user = {
                     email: this.email,
@@ -310,8 +301,7 @@ export default {
         emailRules() {
             return [
                 v => !!v || "E-mail is required",
-                v =>
-                /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+                v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
                 "E-mail must be valid"
             ];
         },

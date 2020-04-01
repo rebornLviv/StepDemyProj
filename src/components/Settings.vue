@@ -49,7 +49,6 @@
 <script>
 export default {
     data: () => ({
-
         confP: false,
         password: '',
         repassword: '',
