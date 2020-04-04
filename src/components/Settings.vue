@@ -2,7 +2,16 @@
 <v-col cols="8" class="userData">
     <p class="txtp">Налаштування профілю</p>
     <div class="inpC">
-        <input type="text" v-model="name" v-if="editName" class="inp">
+        <!-- <input type="text" v-model="name" v-if="editName" class="inp"> -->
+        <v-text-field
+            v-model="name"
+            label="Ім'я"
+            outlined
+            single-line
+            class="inpt"
+            v-if="editName"
+        >
+        </v-text-field>
         <p v-if="!editName" class="uName">Ім'я : {{userName}}</p>
         <v-spacer></v-spacer>
         <v-icon v-if="!editName" class="edit" @click="()=>{ editName = ! editName,name=userName}">mdi-lead-pencil</v-icon>
@@ -27,21 +36,46 @@
         <v-icon v-if="editDate" class="edit" @click="changeBday">mdi-check</v-icon>
         <v-icon v-if="editDate" class="edit" @click="()=>{ editDate = ! editDate}">mdi-window-close</v-icon>
     </div>
-    <div class="btns">
-        <v-btn v-if="!confP" dark @click="configuratePassword" class="chP"> <span>Налаштування паролю</span>
+    <!-- <div class="btns">
+        <v-btn v-if="!confP" dark @click="configuratePassword, expand = !expand" class="chP"> <span>Налаштування паролю</span>
             <v-spacer></v-spacer>
             <v-icon color="white">mdi-chevron-down</v-icon>
         </v-btn>
-        <div v-if="confP" class="changepsw">
-            <input type="password" v-model="password" name="" id="" placeholder="Введіть новий пароль">
-            <input type="password" v-model="repassword" name="" id="" placeholder="Підтвердіть новий пароль">
-            <v-btn color="white--text" class="changeP" :disabled="(!password && !repassword ) || password !== repassword" :loading="isLoading" @click="changePassword">Зберегти</v-btn>
-            <v-icon color="white" size="40px" @click="configuratePassword">mdi-chevron-up</v-icon>
+        <v-expand-panels  v-if="confP" class="changepsw">
+            <v-card
+                v-show="expand"
+                height="500"
+                width="00"
+                class="mx-auto"
+            >
+                <input type="password" v-model="password" name="" id="" placeholder="Введіть новий пароль">
+                <input type="password" v-model="repassword" name="" id="" placeholder="Підтвердіть новий пароль">
+                <v-btn class="changeP" :disabled="(!password && !repassword ) || password !== repassword" :loading="isLoading" @click="changePassword">Зберегти</v-btn>
+                <v-icon color="white" size="40px" @click="configuratePassword">mdi-chevron-up</v-icon>
+            </v-card>   
+        </v-expand-panels>
+    </div> -->
 
-        </div>
-        <v-btn @click="onLogout()" class="chP"> <span>Вийти з аккаунту</span>
-        </v-btn>
-    </div>
+    <template>
+        <v-expansion-panels width="400" dark>
+            <v-expansion-panel 
+            v-for="(item,i) in 1"
+            :key="i"
+            >
+                <v-expansion-panel-header v-if="!confP" @click="configuratePassword, expand = !expand">
+                    <span justify="center" align="center" class="title-pass">Налаштування паролю</span>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content class="content-password changepsw">
+                    <input type="password" v-model="password" name="" id="" placeholder="Введіть новий пароль">
+                    <input type="password" v-model="repassword" name="" id="" placeholder="Підтвердіть новий пароль">
+                    <v-btn class="changeP" :disabled="(!password && !repassword ) || password !== repassword" :loading="isLoading" @click="changePassword">Зберегти</v-btn>
+                </v-expansion-panel-content>
+            </v-expansion-panel>
+        </v-expansion-panels>
+    </template>
+    <v-btn @click="onLogout()" class="chP">
+        <span>Вийти з аккаунту</span>
+    </v-btn>
 
 </v-col>
 </template>
@@ -56,8 +90,8 @@ export default {
         editName: false,
         editDate: false,
         date: null,
-        menu: false
-
+        menu: false,
+        expand: false
     }),
     methods: {
         onLogout() {
@@ -70,6 +104,8 @@ export default {
         },
         configuratePassword() {
             this.confP = !this.confP
+
+            
 
         },
         changeName() {
@@ -88,7 +124,7 @@ export default {
                 this.confP = false;
                 this.password = ''
                 this.repassword = ''
-            }, 1000)
+            }, 5000)
 
         }
 
@@ -112,37 +148,33 @@ export default {
 <style scoped>
 .uName {
     margin-bottom: 0;
+    font-size: 22px;
 }
 
-.changeP {
-    margin-top: 10px;
-    color: white !important;
-}
-
-.changepsw {
+.content-password {
     display: flex;
     flex-direction: column;
-    width: 400px;
-    height: 165px;
-    background: #323232;
-    border-radius: 10px;
     align-items: center;
-    transition-duration: 5000ms;
 }
 
-.chP {
-    width: 400px !important;
-
-}
-
-.changepsw>input {
-    border-bottom: 1px solid white;
+.content-password input {
+    background-color: white;
+    margin-right: 20px;
     padding: 10px;
-    color: white;
-    width: 70%;
-    padding-bottom: 7px;
-
+    padding-right: 40px;
+    color: black;
+    border-radius: 5px;
 }
+
+.title-pass {
+    font-size: 22px;
+}
+
+ .chP {
+    width: 400px !important;
+    margin-top: 20px;
+}
+
 
 .cc {
     display: flex;

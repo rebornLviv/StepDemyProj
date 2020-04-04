@@ -21,17 +21,13 @@
         <v-row>
             <v-col class="mn">
                 <div class="smen">
-
                     <div class="ib">
                         <v-icon class="iblc" size="140px">mdi-account</v-icon>
                         <p class=" itext">Викладачі</p>
                     </div>
-
                 </div>
-
             </v-col>
             <v-col class="mn">
-
                 <div class="smenb">
                     <div class="ibl">
                         <svg xmlns="http://www.w3.org/2000/svg" width="65" height="85" viewBox="0 0 99 135">
@@ -52,7 +48,6 @@
             </v-col>
             <v-col class="mn">
                 <div class="smenc">
-
                     <div class="ibl">
                         <v-icon>mdi-account</v-icon>
                     </div>

@@ -8,8 +8,41 @@
                 <img v-if="this.$store.getters.getUserPhoto" class="iblc" :src="this.$store.getters.getUserPhoto" alt="">
                 <div class="btns">
                     <div class="upload-btn-wrapper">
-                        <v-btn class="btn">Upload a file</v-btn>
-                        <input type="file" ref="file" @change="selectFile" class="innp" name="myfile" />
+                        <!-- <v-btn class="btn">Upload a file</v-btn> -->
+                        <v-btn color="primary btn" dark @click.stop="dialog = true">
+                            Upload a File
+                        </v-btn>
+
+                        <v-dialog v-model="dialog" max-width="590">
+                            <v-card>
+                                <v-card-title class="headline" justify="center">Змінити фото</v-card-title>
+
+                                <v-card-text>
+                                    <!-- <input type="file" ref="file" @change="selectFile" class="innp" name="myfile" /> -->
+                                    <v-file-input
+                                        label="File input"
+                                        filled
+                                        ref="file"
+                                        @change="selectFile"
+                                        prepend-icon="mdi-camera"
+                                        class="innp"
+                                        show-size counter multiple
+                                        name="myfile"
+                                    ></v-file-input>
+                                </v-card-text>
+
+                                <v-card-actions>
+                                    <!-- <v-spacer></v-spacer> -->
+                                    <v-btn class="btn-photo" color="green darken-1" text @click="dialog = false">
+                                        Відміна
+                                    </v-btn>
+
+                                    <v-btn class="btn-photo" color="green darken-1" text @click="dialog = false" @change="selectFile" name="myfile" ref="file">
+                                        Зберегти
+                                    </v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
                     </div>
                     <v-btn class="mb-3 mt-2" to="courses">Мої курси</v-btn>
                     <v-btn class="sett" to="settings">Налаштування </v-btn>
@@ -24,11 +57,10 @@
 <script>
 export default {
     data: () => ({
-
         confP: false,
         file: null,
-        userImage: ''
-
+        userImage: '',
+        dialog: false
     }),
 
     methods: {
@@ -59,6 +91,10 @@ export default {
 
 .btn {
     width: 200px;
+}
+
+.btn-photo {
+    font-size: 18px;
 }
 
 .upload-btn-wrapper {
